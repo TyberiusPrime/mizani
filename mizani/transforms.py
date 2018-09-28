@@ -285,7 +285,13 @@ def log_trans(base=None, **kwargs):
     _trans = trans_new(name, transform, inverse, **kwargs)
 
     if 'minor_breaks' not in kwargs:
-        _trans.minor_breaks = trans_minor_breaks(_trans, 4)
+        if base == 10: # 10 seperations, just like log10 graph paper
+            no_of_minor_breaks = 8
+        elif base == 2: # works out to a minor break at every log unit
+            no_of_minor_breaks = 2
+        else: # won't be interpretable anyway, keep old behaviour.
+            no_of_minor_breaks = 4
+        _trans.minor_breaks = trans_minor_breaks(_trans, no_of_minor_breaks)
 
     return _trans
 
